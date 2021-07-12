@@ -2,15 +2,28 @@ name: Build Example Code
 
 on: [push,pull_request]
 
+env:
+  PROTOBUF_VER: 3.17.3
+
+# The code is cross-platform, though i don't know how to install AND make protobuf findable using find_package in CMake
 jobs:
   build_example:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest,windows-latest]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - run: sudo apt update
+      - run: sudo apt install wget -y
+      - name: Install protobuf
+        run: |
+          wget https://github.com/protocolbuffers/protobuf/releases/download/v3.17.3/protobuf-cpp-${{ env.PROTOBUF_VER }}.tar.gz
+          tar -xf protobuf-cpp-${{ env.PROTOBUF_VER }}.tar.gz
+          cd protobuf-${{ env.PROTOBUF_VER }}
+          ./configure
+          make -j$(nproc)
+          sudo make install
+          sudo ldconfig   # refresh shared library cache
       - run: cmake -B build
         working-directory: example
       - run: cmake --build build
         working-directory: example
+
