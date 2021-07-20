@@ -4,8 +4,9 @@ project(diskarray_example CXX)
 include(cmake/CPM.cmake)
 
 # Prefer to specify specific tag using "@v1.2" etc. or commit hash using "#commithash"
-CPMAddPackage("gh:adi-g15/DiskArray#main")
-# include_directories(../include)
+# CPMAddPackage("gh:adi-g15/DiskArray#main")
+# add_subdirectory(..)
+include_directories(../include)
 
 find_package(Protobuf REQUIRED)
 protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS proto/bigobject.proto)
@@ -14,4 +15,3 @@ include_directories(${CMAKE_BINARY_DIR})    # Required, since this location cont
 add_executable(${PROJECT_NAME} main.cpp ${PROTO_SRCS} ${PROTO_HDRS})
 
 target_link_libraries(${PROJECT_NAME} PUBLIC protobuf)
-target_link_libraries(${PROJECT_NAME} PUBLIC DiskArray)
