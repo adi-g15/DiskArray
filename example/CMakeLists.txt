@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.14)
 project(diskarray_example CXX)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
+
 include(cmake/CPM.cmake)
 
 # Prefer to specify specific tag using "@v1.2" etc. or commit hash using "#commithash"
