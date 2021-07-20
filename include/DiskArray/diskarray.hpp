@@ -219,7 +219,7 @@ typename DiskArray<T, MAX_NUM_ELEMENTS_IN_MEMORY>::_RefType DiskArray<T, MAX_NUM
 	m_file.read( object, next_valid_index - index_in_file );
 
 	T* obj = new T;	// allocating on heap
-	obj->ParseFromString( object );
+	obj->ParseFromString( std::string(object, object + object_size ) );	/*CAUTION: If just passed the char*, then the string constructor will consider it as a C string, ie. ends with a '\0' character, which can be any character in binary, not necessarily the end of the data*/
 
 	return _RefType{ obj, false };
 }
